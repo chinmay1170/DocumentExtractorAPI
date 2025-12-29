@@ -161,7 +161,7 @@ curl -s http://127.0.0.1:8000/extract/req_abcdef123456
 ## Design Rationale
 
 - **Strict idempotency**: Unique key ensures exactly-once logical create behavior for `POST /extract`.
-- **Async processing**: Keeps request latency low and isolates extraction failures.
+- **Async processing Using Queue**: Keeps request latency low and isolates extraction failures.
 - **Retry + timeout**: Balances resilience with bounded latency. Retries are limited and timeouts prevent stuck tasks.
 - **Regex + LLM merge**: Deterministic baseline with optional semantic booster; per-field merge yields better coverage than either alone.
 - **SQLite**: Simplicity and portability for local assessment.
@@ -172,19 +172,3 @@ curl -s http://127.0.0.1:8000/extract/req_abcdef123456
 - SQLite has limited concurrency; a production DB (e.g., Postgres) would be preferable.
 - LLM extraction is non-deterministic and slower; we default to regex for performance and predictability.
 - Per-process retry counts are in-memory; a DB-backed attempt counter would persist across restarts.
-
-### Development Workflow (optional)
-
-- Typical loop:
-  - Run locally with `uvicorn ... --reload`
-  - Submit docs via cURL or Swagger UI
-  - Observe logs (`APP_LOG_LEVEL=INFO|DEBUG`)
-- Coding assistant tooling was used to:
-  - scaffold API and worker
-  - iteratively refine regex heuristics and LLM integration
-  - implement retries, timeouts, and logging
-
-### References
-
-- Assessment PDF: [`Coding Assessment - Idempotent Extraction API.pdf`](file:///Users/chinmaykrishna/Documents/Personal/Chinmay/TestProject/Coding%20Assessment%20-%20Idempotent%20Extraction%20API.pdf)
-

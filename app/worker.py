@@ -19,7 +19,7 @@ class ExtractionWorker:
         self._stop_event = threading.Event()
         self._thread: Optional[threading.Thread] = None
         # regex | llm (default regex)
-        self._backend: str = os.getenv("EXTRACTOR_BACKEND", "llm").strip().lower()
+        self._backend: str = os.getenv("EXTRACTOR_BACKEND", "regex").strip().lower()
         # retry and timeout config
         self._max_retries: int = int(os.getenv("WORKER_MAX_RETRIES", "3"))
         self._task_timeout_seconds: float = float(os.getenv("WORKER_TASK_TIMEOUT_SECONDS", "60"))
