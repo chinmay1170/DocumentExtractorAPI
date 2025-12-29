@@ -1,4 +1,4 @@
-## Idempotent Extraction API
+## Document Extraction API
 
 A small FastAPI service that accepts documents, extracts structured fields, and returns results idempotently. Persistence is backed by SQLite so data survives server restarts. Processing is asynchronous via an in-process queue and worker thread.
 
